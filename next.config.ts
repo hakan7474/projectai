@@ -1,7 +1,14 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  // For Turbopack in Next.js 16, use serverExternalPackages
+  serverExternalPackages: ['pdfkit', 'docx'],
+  // Set Turbopack root to fix multiple lockfile warning
+  turbopack: {
+    root: path.resolve(__dirname),
+  },
 };
 
 export default nextConfig;
