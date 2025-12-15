@@ -1,0 +1,14 @@
+services:
+  projectai:
+    image: ${IMAGE_URI}
+    container_name: projectai-app
+    ports:
+      - "${HOST_PORT}:3006"
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data    
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
