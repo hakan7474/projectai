@@ -9,31 +9,37 @@ async function loadPdfJs() {
     return pdfjsLib;
   }
 
+  // Skip loading during build time to avoid Turbopack errors
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    console.log('loadPdfJs: Skipping during build phase');
+    return null;
+  }
+
   try {
     console.log('loadPdfJs: Loading pdfjs-dist v4');
     
     // Use pdfjs-dist v4 which has better Node.js support
-    // Try different import paths for v4
+    // Try different import paths for v4 (try standard paths first, then legacy)
     let pdfjs: any;
     try {
-      pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs');
-      console.log('loadPdfJs: Legacy pdf.mjs import succeeded');
+      // Try standard v4 path first (most likely to work)
+      pdfjs = await import('pdfjs-dist/build/pdf.mjs');
+      console.log('loadPdfJs: Standard pdf.mjs import succeeded');
     } catch (error1) {
       try {
-        pdfjs = await import('pdfjs-dist/legacy/build/pdf.js');
-        console.log('loadPdfJs: Legacy pdf.js import succeeded');
+        // Try legacy pdf.mjs
+        pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs');
+        console.log('loadPdfJs: Legacy pdf.mjs import succeeded');
       } catch (error2) {
-        try {
-          pdfjs = await import('pdfjs-dist/build/pdf.mjs');
-          console.log('loadPdfJs: Standard pdf.mjs import succeeded');
-        } catch (error3) {
-          console.error('loadPdfJs: All import paths failed', {
-            error1: error1 instanceof Error ? error1.message : 'Unknown',
-            error2: error2 instanceof Error ? error2.message : 'Unknown',
-            error3: error3 instanceof Error ? error3.message : 'Unknown',
-          });
-          throw error1;
-        }
+        // Skip legacy pdf.js import as it may not exist in v4 and causes build errors
+        // If all imports fail, log but don't throw during build
+        console.warn('loadPdfJs: Standard import paths failed. PDF processing will not be available.', {
+          error1: error1 instanceof Error ? error1.message : 'Unknown',
+          error2: error2 instanceof Error ? error2.message : 'Unknown',
+        });
+        // Return null instead of throwing to allow build to continue
+        // The actual error will be thrown when pdfToMarkdown is called
+        return null;
       }
     }
     
@@ -108,7 +114,7 @@ export async function pdfToMarkdown(
     // Use pdfjs-dist v4 (better Node.js support)
     const pdfjs = await loadPdfJs();
     if (!pdfjs || !pdfjs.getDocument) {
-      throw new Error('pdfjs-dist could not be loaded');
+      throw new Error('PDF işleme kütüphanesi yüklenemedi. pdfjs-dist paketi kurulu olmalıdır.');
     }
 
     // Convert Buffer to Uint8Array (pdfjs-dist v4 requires Uint8Array, not Buffer)
