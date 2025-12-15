@@ -75,7 +75,7 @@ const TemplateSchema = new Schema<ITemplate>(
   {
     timestamps: true,
     strictPopulate: false, // Allow populating fields that may not exist in all documents
-  }
+  } as any
 );
 
 // Index tanımlamasını try-catch ile koruyalım

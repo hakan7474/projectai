@@ -12,9 +12,9 @@ interface MongooseCache {
 }
 
 // Use globalThis instead of global for Next.js 16 compatibility
-declare const globalThis: {
-  mongoose: MongooseCache | undefined;
-} & typeof globalThis;
+declare global {
+  var mongoose: MongooseCache | undefined;
+}
 
 let cached: MongooseCache = globalThis.mongoose || { conn: null, promise: null };
 

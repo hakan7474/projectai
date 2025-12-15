@@ -152,7 +152,7 @@ async function exportToPDF(
       });
 
       const chunks: Buffer[] = [];
-      doc.on('data', (chunk) => chunks.push(chunk));
+      doc.on('data', (chunk: Buffer) => chunks.push(chunk));
       doc.on('end', () => {
         const pdfBuffer = Buffer.concat(chunks);
         resolve(
@@ -253,7 +253,7 @@ async function exportToWord(
   docxModule: typeof import('docx')
 ) {
   const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } = docxModule;
-  const children: Paragraph[] = [];
+  const children: any[] = [];
 
   // Title
   children.push(
@@ -363,7 +363,7 @@ async function exportToWord(
   const buffer = await Packer.toBuffer(doc);
   const filename = sanitizeFilename(project.title);
 
-  return new NextResponse(buffer, {
+  return new NextResponse(buffer as any, {
     headers: {
       'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       'Content-Disposition': `attachment; filename="${filename}.docx"`,

@@ -20,13 +20,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         await connectDB();
 
-        const user = await User.findOne({ email: credentials.email.toLowerCase() });
+        const user = await User.findOne({ email: typeof credentials.email === 'string' ? credentials.email.toLowerCase() : String(credentials.email).toLowerCase() });
 
         if (!user) {
           throw new Error('Kullanıcı bulunamadı');
         }
 
-        const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
+        const isPasswordValid = await bcrypt.compare(
+          typeof credentials.password === 'string' ? credentials.password : String(credentials.password),
+          user.password
+        );
 
         if (!isPasswordValid) {
           throw new Error('Şifre hatalı');

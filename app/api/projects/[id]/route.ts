@@ -184,8 +184,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       // Handle content as Map or Object
       const contentMap = project.content instanceof Map ? project.content : new Map(Object.entries(project.content || {}));
       
-      Object.keys(validatedData.content).forEach((sectionId) => {
-        const incomingContent = validatedData.content[sectionId];
+      Object.keys(validatedData.content || {}).forEach((sectionId) => {
+        const incomingContent = validatedData.content?.[sectionId];
         const existing = contentMap.get(sectionId);
         
         contentMap.set(sectionId, {

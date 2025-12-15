@@ -18,7 +18,7 @@ export interface IProject extends mongoose.Document {
 
 const CollaboratorSchema = new Schema<Collaborator>({
   userId: {
-    type: Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId as any,
     ref: 'User',
     required: true,
   },
@@ -35,7 +35,7 @@ const CollaboratorSchema = new Schema<Collaborator>({
 
 const SourceDocumentSchema = new Schema<SourceDocument>({
   documentId: {
-    type: Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId as any,
     ref: 'Document',
     required: true,
   },
@@ -57,7 +57,7 @@ const ProjectSchema = new Schema<IProject>(
       required: true,
     },
     templateId: {
-      type: Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId as any,
       ref: 'Template',
       required: true,
     },
@@ -66,7 +66,7 @@ const ProjectSchema = new Schema<IProject>(
       required: true,
     },
     ownerId: {
-      type: Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId as any,
       ref: 'User',
       required: true,
     },

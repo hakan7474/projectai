@@ -23,11 +23,13 @@ async function loadPdfJs() {
     let pdfjs: any;
     try {
       // Try standard v4 path first (most likely to work)
+      // @ts-ignore - pdfjs-dist doesn't have proper TypeScript definitions for .mjs imports
       pdfjs = await import('pdfjs-dist/build/pdf.mjs');
       console.log('loadPdfJs: Standard pdf.mjs import succeeded');
     } catch (error1) {
       try {
         // Try legacy pdf.mjs
+        // @ts-ignore - pdfjs-dist doesn't have proper TypeScript definitions for .mjs imports
         pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs');
         console.log('loadPdfJs: Legacy pdf.mjs import succeeded');
       } catch (error2) {

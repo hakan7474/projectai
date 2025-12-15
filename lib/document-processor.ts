@@ -78,7 +78,7 @@ async function processPDF(buffer: Buffer): Promise<ProcessedDocument> {
     
     const text = result.text || '';
     const numPages = result.numpages || 0;
-    const wordCount = text.split(/\s+/).filter((word) => word.length > 0).length;
+    const wordCount = text.split(/\s+/).filter((word: string) => word.length > 0).length;
     
     console.log('processPDF: PDF parsed successfully', {
       textLength: text.length,
@@ -137,7 +137,7 @@ async function processDOCX(buffer: Buffer): Promise<ProcessedDocument> {
           .trim();
         
         if (htmlText && htmlText.length > 0) {
-          const wordCount = htmlText.split(/\s+/).filter((word) => word.length > 0).length;
+          const wordCount = htmlText.split(/\s+/).filter((word: string) => word.length > 0).length;
           return {
             text: htmlText,
             metadata: { wordCount },
@@ -164,7 +164,7 @@ async function processDOCX(buffer: Buffer): Promise<ProcessedDocument> {
           .trim();
         
         if (htmlText && htmlText.length > 0) {
-          const wordCount = htmlText.split(/\s+/).filter((word) => word.length > 0).length;
+          const wordCount = htmlText.split(/\s+/).filter((word: string) => word.length > 0).length;
           return {
             text: htmlText,
             metadata: { wordCount },
@@ -177,7 +177,7 @@ async function processDOCX(buffer: Buffer): Promise<ProcessedDocument> {
       throw new Error('Word dosyasından metin çıkarılamadı. Dosya boş olabilir veya korumalı olabilir.');
     }
     
-    const wordCount = text.split(/\s+/).filter((word) => word.length > 0).length;
+    const wordCount = text.split(/\s+/).filter((word: string) => word.length > 0).length;
     
     console.log('processDOCX: DOCX processed successfully', {
       textLength: text.length,
@@ -215,7 +215,7 @@ async function processDOCX(buffer: Buffer): Promise<ProcessedDocument> {
 }
 
 async function processText(text: string): Promise<ProcessedDocument> {
-  const wordCount = text.split(/\s+/).filter((word) => word.length > 0).length;
+  const wordCount = text.split(/\s+/).filter((word: string) => word.length > 0).length;
 
   return {
     text,

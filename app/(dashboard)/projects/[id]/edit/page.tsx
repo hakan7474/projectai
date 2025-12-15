@@ -139,9 +139,8 @@ export default function EditProjectPage() {
             leftPadding: 75,
             gridLineStartPadding: 35,
             fontSize: 11,
-            fontFamily: '"Open Sans", sans-serif',
             numberSectionStyles: 4,
-            bottomPadding: 25,
+            topPadding: 25,
           },
         });
 
@@ -327,6 +326,7 @@ export default function EditProjectPage() {
       message: 'İçerik oluşturma başlatılıyor...',
       completedSections: [],
       errorSections: [],
+      sectionContents: {},
     });
 
     try {
